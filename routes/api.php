@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/auth', 'App\Http\Controllers\AuthController@login');
+//Route::post('/{channel}', 'App\Http\Controllers\MessagingController@send')->middleware('auth:api');
+Route::post('/{channel}', 'App\Http\Controllers\MessagingController@send');
+
