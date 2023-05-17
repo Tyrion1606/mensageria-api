@@ -72,13 +72,15 @@ class MessagingController extends Controller
     {
         // Cria um novo objeto de e-mail
         $email = new Mail();
-        $email->setFrom('noreply@example.com', 'Your Company');
+        $email->setFrom('davi.monteiro@ubuntueducacao.com.br', 'Ubuntu Educacao');
         $email->addTo($data['to']);
         $email->setSubject('Welcome to Ubuntu');
         $email->addContent('text/html', $data['message']);
 
-        // Inicializa o cliente SendGrid
-        $sendgrid = new \SendGrid(env('SENDGRID_API_KEY'));
+        // Inicializa o cliente SendGrid com a verificação SSL desativada
+        $sendgrid = new \SendGrid(env('SENDGRID_API_KEY'), [
+            'verify_ssl' => false
+        ]);
 
         // Envia o e-mail
         $response = $sendgrid->send($email);
