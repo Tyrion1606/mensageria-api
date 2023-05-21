@@ -18,7 +18,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Rota para fazer login (não precisa de autenticação)
 Route::post('/auth', 'App\Http\Controllers\AuthController@login');
-//Route::post('/{channel}', 'App\Http\Controllers\MessagingController@send')->middleware('auth:api');
-Route::post('/{channel}', 'App\Http\Controllers\MessagingController@send');
+
+// Rota para fazer registro (não precisa de autenticação)
+Route::post('/register', 'App\Http\Controllers\AuthController@register');
+
+// Rota para envio de mensagens (precisa de autenticação)
+Route::post('/{channel}', 'App\Http\Controllers\MessagingController@send')->middleware('auth.api');       //que outra forma os usuários podem ser cadastrados?
 

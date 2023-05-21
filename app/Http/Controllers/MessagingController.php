@@ -14,11 +14,9 @@ class MessagingController extends Controller
     // Função de envio
     public function send(Request $request, $channel)
     {
+        //dd('send');
         // Validação dos campos obrigatórios da requisição
-        $data = $request->validate([
-            'to' => 'required',
-            'message' => 'required',
-        ]);
+        $data = $request->only(['to', 'message']);
 
         // Verifica qual canal foi selecionado e chama a função apropriada
         switch ($channel) {
