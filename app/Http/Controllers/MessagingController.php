@@ -8,15 +8,16 @@ use Twilio\Rest\Client as TwilioClient;
 use GuzzleHttp\Client as GuzzleClient; //necessário para usar o facade?
 use Illuminate\Support\Facades\Http;
 use SendGrid\Mail\Mail;
+use App\Http\Requests\MessageFormRequest;
 
 class MessagingController extends Controller
 {
     // Função de envio
-    public function send(Request $request, $channel)
+    public function send(MessageFormRequest $request, $channel)
     {
         //dd('send');
-        // Validação dos campos obrigatórios da requisição
-        $data = $request->only(['to', 'message']);
+        // Validação da requisição
+        $data = $request->validated();
 
         // Verifica qual canal foi selecionado e chama a função apropriada
         switch ($channel) {
