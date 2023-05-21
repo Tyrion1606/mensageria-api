@@ -54,8 +54,6 @@ class MessagingController extends Controller
         // Faz a chamada HTTP POST para a API do Z-API usando o Facade HTTP
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('ZAPI_TOKEN'),
-        ])->withOptions([
-            'verify' => false, // Desativa a verificação SSL     PERIGO!!!! perguntar para o Douglas
         ])->post(env('ZAPI_ENDPOINT_URL'), [
             'phone' => $data['to'],
             'message' => $data['message'],
