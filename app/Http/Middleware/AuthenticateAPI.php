@@ -29,7 +29,6 @@ class AuthenticateAPI
         if (!$user) {
             return response()->json('Unauthorized', 401);
         }
-
         // Se o usuário foi encontrado, adiciona o usuário à Request para que possa ser acessado nos controladores
         $request->user = $user;
 

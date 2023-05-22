@@ -9,77 +9,37 @@ use GuzzleHttp\Client as GuzzleClient; //necessário para usar o facade?
 use Illuminate\Support\Facades\Http;
 use SendGrid\Mail\Mail;
 use App\Http\Requests\MessageFormRequest;
+use App\Services\Messages\SMS\TwilioService;
+use App\Services\Messages\WhatsApp\ZapiService;
+use App\Services\Messages\Email\SendGridService;
+
 
 class MessagingController extends Controller
 {
     // Função de envio
     public function send(MessageFormRequest $request, $channel)
     {
-        //dd('send');
+        dd('send');
         // Validação da requisição
         $data = $request->validated();
 
         // Verifica qual canal foi selecionado e chama a função apropriada
         switch ($channel) {
             case 'sms':
-                return $this->sendSMS($data);
+                $service = new TwilioService();
+                break;
             case 'whatsapp':
-                return $this->sendWhatsApp($data);
+                $service = new ZapiService();
+                break;
             case 'email':
-                return $this->sendEmail($data);
+                $service = new SendGridService();
+                break;
             default:
                 // Retorna um erro se o canal for inválido
                 return response()->json(['error' => 'Invalid channel'], 400);
         }
-    }
 
-    // Função para enviar SMS usando Twilio
-    private function sendSMS($data)
-    {
-        // Inicializa o cliente Twilio
-        $twilio = new TwilioClient(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
-
-        // Envia a mensagem
-        $twilio->messages->create($data['to'], [
-            'from' => env('TWILIO_PHONE'),
-            'body' => $data['message'],
-        ]);
-
-        // Retorna uma resposta de sucesso
-        return response()->json(['status' => 'success'], 200);
-    }
-
-    // Função para enviar mensagem no WhatsApp usando Z-API
-    private function sendWhatsApp($data)
-    {
-        // Faz a chamada HTTP POST para a API do Z-API usando o Facade HTTP
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('ZAPI_TOKEN'),
-        ])->post(env('ZAPI_ENDPOINT_URL'), [
-            'phone' => $data['to'],
-            'message' => $data['message'],
-        ]);
-
-        // Retorna a resposta do Z-API
-        return response()->json($response->json(), $response->status());
-    }
-
-    // Função para enviar e-mails usando SendGrid
-    private function sendEmail($data)
-    {
-        // Cria um novo objeto de e-mail
-        $email = new Mail();
-        $email->setFrom('davimonteiro06@gmail.com', 'teste');
-        $email->addTo($data['to']);
-        $email->setSubject('Welcome to Ubuntu');
-        $email->addContent('text/html', $data['message']);
-
-        // Inicializa o cliente SendGrid com a verificação SSL desativada
-        $sendgrid = new \SendGrid(env('SENDGRID_API_KEY'));
-
-        // Envia o e-mail
-        $response = $sendgrid->send($email);
-        // Retorna uma resposta de sucesso
-        return response()->json(['status' => 'success'], $response->statusCode());
+        $response = $service->send($data['to'], $data['message']);
+        return response()->json(['status' => 'success'], $response->status());
     }
 }
