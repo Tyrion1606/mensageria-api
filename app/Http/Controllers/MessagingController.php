@@ -19,7 +19,7 @@ class MessagingController extends Controller
     // Função de envio
     public function send(MessageFormRequest $request, $channel)
     {
-        dd('send');
+        //dd('send');
         // Validação da requisição
         $data = $request->validated();
 

@@ -7,29 +7,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
     // método para autenticar um usuário
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
+
+        // Valida os dados da requisição usando a Form Request customizada.
+        // Se a validação falhar, uma resposta com erro de validação será automaticamente retornada.
+        $validatedData = $request->validated();
+
         // Pega apenas o email e a senha da requisição
         $credentials = $request->only('email', 'password');
 
-        // Usa a facade Auth para tentar fazer o login. Se o login for bem sucedido, retorna true.
+        // Tenta fazer login. Se bem sucedido, retorna true.
         if (Auth::attempt($credentials)) {
-            // Pega o usuário autenticado
-            $user = Auth::user();
-
-            // Cria um token de API randomizado
-            $token = Str::random(60);
-
-            // Salva o token no banco de dados associado ao usuário autenticado
-            // forceFill permite preencher atributos que não são mass assignable
-            $user->forceFill(['api_token' => hash('sha256', $token)])->save();
-
-            // Retorna o token como resposta
-            return ['token' => $token];
+            $user = Auth::user(); // Obtem o usuário autenticado
+            $token = $user->createToken('token_name'); // Cria um token usando a treit 'HasApiTokens' declarada no Model 'User'
+            return ['token' => $token->plainTextToken]; // Retorna o token como resposta
         }
 
         // Se a autenticação falhar, retorna um erro 401 com a mensagem
@@ -38,18 +35,31 @@ class AuthController extends Controller
         ], 401);
     }
 
-    // método para registrar um novo usuário
-    public function register(RegisterRequest  $request)
+    public function logout()
     {
+        auth()->user()->currentAccessToken()->delete();
+        return response()->json([], 204);
+    }
+
+    public function fullLogout()
+    {
+        auth()->user()->tokens()->delete();
+        return response()->json([], 204);
+    }
+
+    // método para registrar um novo usuário
+    public function register(RegisterRequest $request)
+    {
+
         // Valida os dados da requisição usando a Form Request customizada.
         // Se a validação falhar, uma resposta com erro de validação será automaticamente retornada.
         $validatedData = $request->validated();
 
-        // Criptografa a senha do usuário antes de salvar
-        $validatedData['password'] = bcrypt($request->password);
+        // Pega apenas o nome, email e a senha da requisição
+        $userData = $request->only('name', 'email', 'password');
 
-        // Cria um novo usuário com os dados validados e retorna como resposta.
-        $user = User::create($validatedData);
+        // Cria e armazena na variavel '$user' um novo usuário com os dados validados.
+        $user = User::create($userData);
 
         return response()->json($user, 201);
     }

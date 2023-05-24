@@ -18,12 +18,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Rota para fazer login (não precisa de autenticação)
-Route::post('/auth', 'App\Http\Controllers\AuthController@login');
+Route::prefix('auth')->group(function(){
+    // Rota para fazer login (não precisa de autenticação)
+    Route::post('/login', 'App\Http\Controllers\AuthController@login');
 
-// Rota para fazer registro (não precisa de autenticação)
-Route::post('/register', 'App\Http\Controllers\AuthController@register');
+    // Rota para fazer logout (precisa de autenticação)
+    Route::post('/logout', 'App\Http\Controllers\AuthController@logout')->middleware('auth:sanctum');
+
+    // Rota para fazer logout de TODOS os tokens do usuário atualmente logado (precisa de autenticação)
+    Route::post('/logout/all', 'App\Http\Controllers\AuthController@fullLogout')->middleware('auth:sanctum');
+
+    // Rota para fazer registro (não precisa de autenticação)
+    Route::post('/register', 'App\Http\Controllers\AuthController@register');
+});
 
 // Rota para envio de mensagens (precisa de autenticação)
-Route::post('/{channel}', 'App\Http\Controllers\MessagingController@send')->middleware('auth.api');       //que outra forma os usuários podem ser cadastrados?
+Route::post('/{channel}', 'App\Http\Controllers\MessagingController@send')->middleware('auth:sanctum');
 
