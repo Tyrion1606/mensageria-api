@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "522d6d40825a89cc832ef293ac7e9228",
+    "content-hash": "376885c2d1386810ac44dfd7411517a6",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2037,6 +2037,62 @@
             "time": "2022-04-17T13:12:02+00:00"
         },
         {
+            "name": "maxbanton/cwh",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maxbanton/cwh.git",
+                "reference": "916f24458b86673b5ed88f40b12bcc6ac5e3b47f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maxbanton/cwh/zipball/916f24458b86673b5ed88f40b12bcc6ac5e3b47f",
+                "reference": "916f24458b86673b5ed88f40b12bcc6ac5e3b47f",
+                "shasum": ""
+            },
+            "require": {
+                "aws/aws-sdk-php": "^3.18",
+                "monolog/monolog": "^2.0 || ^3.0",
+                "php": "^7.2 || ^8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5 || ^9.4",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "suggest": {
+                "maxbanton/dd": "Minimalistic dump-and-die function for easy debugging"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Maxbanton\\Cwh\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Max Leonov",
+                    "email": "hi@maxleonov.pw",
+                    "homepage": "https://maxleonov.pw"
+                }
+            ],
+            "description": "AWS CloudWatch Handler for Monolog library",
+            "homepage": "https://github.com/maxbanton/cwh",
+            "keywords": [
+                "aws",
+                "cloudwatch",
+                "monolog"
+            ],
+            "support": {
+                "issues": "https://github.com/maxbanton/cwh/issues",
+                "source": "https://github.com/maxbanton/cwh"
+            },
+            "time": "2022-11-07T12:55:13+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.3.1",
             "source": {
@@ -2590,6 +2646,57 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "pagevamp/laravel-cloudwatch-logs",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pagevamp/laravel-cloudwatch-logs.git",
+                "reference": "bbe7804a083bb926b16cdafe0847d0e3746467f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pagevamp/laravel-cloudwatch-logs/zipball/bbe7804a083bb926b16cdafe0847d0e3746467f2",
+                "reference": "bbe7804a083bb926b16cdafe0847d0e3746467f2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.1 || ^6.0 || ^7.0 || ^8.0 || ^9.0|^10.0",
+                "maxbanton/cwh": "^1.1.14 || ^2.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.12 || ^2.16|^3.14",
+                "mockery/mockery": "^1.2",
+                "phpunit/phpunit": "^6.5 || ^8.4 || ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tests\\": "tests/",
+                    "Pagevamp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Naren Chitrakar",
+                    "email": "developer.naren@gmail.com"
+                },
+                {
+                    "name": "Sujan Shrestha",
+                    "email": "najus.shrestha@gmail.com"
+                }
+            ],
+            "description": "Laravel Adapter for AWS CloudWatch",
+            "support": {
+                "issues": "https://github.com/pagevamp/laravel-cloudwatch-logs/issues",
+                "source": "https://github.com/pagevamp/laravel-cloudwatch-logs/tree/v1.0.3"
+            },
+            "time": "2023-04-12T11:40:41+00:00"
         },
         {
             "name": "phpoption/phpoption",

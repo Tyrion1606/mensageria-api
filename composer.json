@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/telescope": "^4.14",
         "laravel/tinker": "^2.8",
+        "pagevamp/laravel-cloudwatch-logs": "^1.0",
         "sendgrid/sendgrid": "^8.0",
         "twilio/sdk": "^7.3"
     },
