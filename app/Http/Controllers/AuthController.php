@@ -37,7 +37,12 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->user()->currentAccessToken()->delete();
+
+        $tokenId = Str::before(request()->bearerToken(), '|');
+        auth()->user()->tokens()->where('id', $tokenId )->delete();
+
+        // auth()->user()->currentAccessToken()->delete(); este método retornava 500 no teste, mas não no insomnia.
+
         return response()->json([], 204);
     }
 
