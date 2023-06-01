@@ -40,6 +40,20 @@ class MessagingController extends Controller
         }
 
         $response = $service->send($data['to'], $data['message']);
-        return response()->json(['status' => 'success'], $response->status());
+
+        // dd($channel, $response->json());
+
+
+        // return response()->json(['path' => $channel], $response->status());
+        return $response;
+
+
+        // if ($response->status() == 200) {
+        //     return response()->json(['status' => 'success'], $response->status());
+        // } else {
+        //     // Extrai os dados do erro da resposta
+        //     $errorData = $response->json();
+        //     return response()->json(['status' => 'error', 'message' => $errorData['message']], $response->status());
+        // }
     }
 }
