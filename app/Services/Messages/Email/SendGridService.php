@@ -10,7 +10,6 @@ use SendGrid\Mail\MailException;
 
 class SendGridService implements MessageInterface
 {
-    // Implementação do método send da interface MessageInterface
     public function send(string $to, string $message, string $subject='Ubuntu Gentech')
     {
         try {
@@ -27,7 +26,6 @@ class SendGridService implements MessageInterface
             // Envia o e-mail
             $response = $sendgrid->send($email);
 
-            // Retorna uma resposta de sucesso
             return response()->json(['status' => 'success'], $response->statusCode());
         } catch (SendGridTypeException $e) {
             // Retorna um erro se houver um problema com o formato do e-mail

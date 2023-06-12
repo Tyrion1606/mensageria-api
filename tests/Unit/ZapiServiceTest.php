@@ -27,15 +27,6 @@ class ZapiServiceTest extends TestCase
         $service = new ZapiService();
         $response = $service->send($to, $message);
 
-
-        // // Assert a POST request was sent to the expected endpoint with the correct data
-        // Http::assertSent(function ($request) use ($to, $message) {
-        //     return $request->url() == env('ZAPI_ENDPOINT_URL') &&
-        //            $request['phone'] == $to &&
-        //            $request['message'] == $message &&
-        //            $request->header('Authorization') == 'Bearer ' . env('ZAPI_TOKEN');
-        // });
-
         // Assert response was returned
         $this->assertNotNull($response);
     }
