@@ -155,8 +155,6 @@ class SendMessageTest extends TestCase
             ]
         );
 
-        dump($response->json(), $response->status());
-
         $response
             ->assertStatus(422)
             ->assertJsonStructure([

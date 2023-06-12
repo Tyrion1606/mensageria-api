@@ -17,10 +17,11 @@ class AuthController extends Controller
         // Se a validação falhar, uma resposta com erro de validação será automaticamente retornada.
         $validatedData = $request->validated();
 
-        $credentials = $request->only('email', 'password');
+        // $credentials = $request->only('email', 'password');
+        // dd($credentials, ' : ', $validatedData, ' : ', $request);
 
         // Tenta fazer login. Se bem sucedido, retorna true.
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($validatedData)) {
             $user = Auth::user(); // Obtem o usuário autenticado
             $token = $user->createToken('token_name'); // Cria um token usando a treat 'HasApiTokens' declarada no Model 'User'
             return ['token' => $token->plainTextToken];
@@ -52,9 +53,10 @@ class AuthController extends Controller
     {
         $validatedData = $request->validated();
 
-        $userData = $request->only('name', 'email', 'password');
+        // $userData = $request->only('name', 'email', 'password');
+        // dd($userData, ' : ', $validatedData, ' : ', $request);
 
-        $user = User::create($userData);
+        $user = User::create($validatedData);
 
         return response()->json($user, 201);
     }
