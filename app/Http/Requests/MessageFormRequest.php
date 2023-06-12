@@ -34,5 +34,4 @@ class MessageFormRequest extends FormRequest
             'message.required' => 'The message field is required.',
         ];
     }
-
 }

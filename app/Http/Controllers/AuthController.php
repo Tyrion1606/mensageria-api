@@ -11,22 +11,20 @@ use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
-    // método para autenticar um usuário
     public function login(LoginRequest $request)
     {
-
         // Valida os dados da requisição usando a Form Request customizada.
         // Se a validação falhar, uma resposta com erro de validação será automaticamente retornada.
         $validatedData = $request->validated();
 
-        // Pega apenas o email e a senha da requisição
-        $credentials = $request->only('email', 'password');
+        // $credentials = $request->only('email', 'password');
+        // dd($credentials, ' : ', $validatedData, ' : ', $request);
 
         // Tenta fazer login. Se bem sucedido, retorna true.
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($validatedData)) {
             $user = Auth::user(); // Obtem o usuário autenticado
-            $token = $user->createToken('token_name'); // Cria um token usando a treit 'HasApiTokens' declarada no Model 'User'
-            return ['token' => $token->plainTextToken]; // Retorna o token como resposta
+            $token = $user->createToken('token_name'); // Cria um token usando a treat 'HasApiTokens' declarada no Model 'User'
+            return ['token' => $token->plainTextToken];
         }
 
         // Se a autenticação falhar, retorna um erro 401 com a mensagem
@@ -37,7 +35,11 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->user()->currentAccessToken()->delete();
+        $tokenId = Str::before(request()->bearerToken(), '|');
+        auth()->user()->tokens()->where('id', $tokenId )->delete();
+
+        // auth()->user()->currentAccessToken()->delete(); este método retornava 500 no teste, mas não no insomnia.
+
         return response()->json([], 204);
     }
 
@@ -47,19 +49,14 @@ class AuthController extends Controller
         return response()->json([], 204);
     }
 
-    // método para registrar um novo usuário
     public function register(RegisterRequest $request)
     {
-
-        // Valida os dados da requisição usando a Form Request customizada.
-        // Se a validação falhar, uma resposta com erro de validação será automaticamente retornada.
         $validatedData = $request->validated();
 
-        // Pega apenas o nome, email e a senha da requisição
-        $userData = $request->only('name', 'email', 'password');
+        // $userData = $request->only('name', 'email', 'password');
+        // dd($userData, ' : ', $validatedData, ' : ', $request);
 
-        // Cria e armazena na variavel '$user' um novo usuário com os dados validados.
-        $user = User::create($userData);
+        $user = User::create($validatedData);
 
         return response()->json($user, 201);
     }
